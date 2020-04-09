@@ -1,0 +1,17 @@
+{
+  "name": "santorini",
+  "version": "1.0.0",
+  "description": "Santorini game logic",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "babel-jest": "^25.2.6",
+    "jest": "^25.2.7"
+  }
+}
