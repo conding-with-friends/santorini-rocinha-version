@@ -4,6 +4,9 @@ const notVacantPositionError = new Error('Position already taken')
 const notOnPhaseError = new Error('Not on phase')
 const invalidMoveToLevelError = new Error('Invalid move to level')
 const invalidRangeError = new Error('Invalid range for move or build')
+const invalidBuildLevelError = new Error('Invalid build level for position')
+
+const MAX_LEVEL = 4
 
 // Dummy state
 // {
@@ -59,6 +62,7 @@ function santorini (action, options, state) {
       validateRange(heroPosition, move)
       validateRange(move, build)
       validateMoveToLevel(heroPosition, move, board)
+      validateBuild(build, board)
 
       return {
         ...state,
@@ -124,4 +128,8 @@ function validateRange (origin, destination) {
 
   if (Math.abs(originX - destinationX) > 1) throw invalidRangeError
   if (Math.abs(originY - destinationY) > 1) throw invalidRangeError
+}
+
+function validateBuild (position, board) {
+  if (board[position] == MAX_LEVEL) throw invalidBuildLevelError
 }
