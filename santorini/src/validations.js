@@ -1,16 +1,14 @@
-import {
-    invalidSetupPositionError,
-    invalidPositionError,
-    notVacantPositionError,
-    notOnPhaseError,
-    invalidMoveToLevelError,
-    invalidRangeError,
-    invalidBuildLevelError
-  } from 'errors'
+import { MAX_LEVEL } from './consts'
 
 import {
-  MAX_LEVEL
-} from 'consts'
+  invalidSetupPositionError,
+  invalidPositionError,
+  notVacantPositionError,
+  notOnPhaseError,
+  invalidMoveToLevelError,
+  invalidRangeError,
+  invalidBuildLevelError
+} from './errors'
 
 function validatePhase (expectedPhase, currentPhase) {
   if (expectedPhase !== currentPhase) throw notOnPhaseError

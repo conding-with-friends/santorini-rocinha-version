@@ -6,11 +6,10 @@ import {
   validateMoveToLevel,
   validateRange,
   validateBuild
-} from 'validations'
+} from './validations'
 
-import { MAX_PLAYERS } from 'consts'
-
-import { invalidActionError } from 'errors'
+import { MAX_PLAYERS } from './consts'
+import { invalidActionError } from './errors'
 
 const initialState = {
   playersCount: MAX_PLAYERS,
@@ -54,11 +53,11 @@ function getNextPhase (currentPlayer, heroes) {
   } = heroes
 
   return Object.values(otherHeroes).every(position => !!position)
-    ? 'move-and-build'
-    : 'setup'
+    ? 'MOVE_AND_BUILD'
+    : 'SETUP'
 }
 
-function setup (action, option, state) {
+function setup (action, options, state) {
   const { currentPlayer, playersCount, heroes, phase, board } = state
 
   validatePhase(action, phase)
@@ -110,3 +109,6 @@ function moveAndBuild (action, option, state) {
     }
   }
 }
+
+export default santorini
+export { initialState }
