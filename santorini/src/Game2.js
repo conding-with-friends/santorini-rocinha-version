@@ -119,9 +119,9 @@ function validateMoveToLevel (currentPosition, move, board) {
 function validateRange (origin, destination) {
   if (origin === destination) throw invalidRangeError
 
-  const originX, originY = origin.split(',')
-  const destinationX, destinationY = destination.split(',')
+  const [originX, originY] = origin.split(',').map(parseInt)
+  const [destinationX, destinationY] = destination.split(',').map(parseInt)
 
-  if (Math.abs(parseInt(originX) - parseInt(destinationX)) > 1) throw invalidRangeError
-  if (Math.abs(parseInt(originY) - parseInt(destinationY)) > 1) throw invalidRangeError
+  if (Math.abs(originX - destinationX) > 1) throw invalidRangeError
+  if (Math.abs(originY - destinationY) > 1) throw invalidRangeError
 }
