@@ -65,53 +65,50 @@ describe('santorini', () => {
         }
       }
 
-      it('should not allow a "SETUP" action', () => {
+      it('throws notOnPhaseError when trying to "SETUP"', () => {
         const options = ['3,2', '3,3']
 
         expect(() => santorini(action, options, currentState)).toThrow(notOnPhaseError)
       })
     })
 
-    describe('when heroes positions are not valid', () => {
-      it('should not allow "SETUP" with empty positions', () => {
-        const options = []
+    it('throws invalidSetupPositionError for "SETUP" with empty positions', () => {
+      const options = []
 
-        expect(() => santorini(action, options, initialState)).toThrow(invalidSetupPositionError)
-      })
+      expect(() => santorini(action, options, initialState)).toThrow(invalidSetupPositionError)
+    })
 
-      it('should not allow "SETUP" with only one hero position', () => {
-        const options = ['0,1', null]
+    it('throws invalidSetupPositionError when trying to "SETUP" with only one hero position', () => {
+      const options = ['0,1', null]
 
-        expect(() => santorini(action, options, initialState)).toThrow(invalidSetupPositionError)
-      })
+      expect(() => santorini(action, options, initialState)).toThrow(invalidSetupPositionError)
+    })
 
-      it('should not allow heroes on the same slot', () => {
-        const options = ['2,1', '2,1']
+    it('throws invalidSetupPositionError when trying to set heroes on the same slot', () => {
+      const options = ['2,1', '2,1']
 
-        expect(() => santorini(action, options, initialState)).toThrow(invalidSetupPositionError)
-      })
+      expect(() => santorini(action, options, initialState)).toThrow(invalidSetupPositionError)
+    })
 
-      // validateBoardPosition
-      it('should not allow position out of board`s boundaries', () => {
-        const options = ['0,1', '9,10']
+    it('throws invalidPositionError when trying to set position out of board`s boundaries', () => {
+      const options = ['0,1', '9,10']
 
-        expect(() => santorini(action, options, initialState)).toThrow(invalidPositionError)
-      })
+      expect(() => santorini(action, options, initialState)).toThrow(invalidPositionError)
+    })
 
-      it('should not set a hero on an already taken slot', () => {
-        const options = ['2,2', '0,1']
-        const currentState = {
-          ...initialState,
-          currentPlayer: 1,
-          heroes: {
-            ...initialState.heroes,
-            '0,0': '0,1',
-            '0,1': '0,2'
-          }
+    it('throws notVacantPositionError when trying to set a hero on an already taken slot', () => {
+      const options = ['2,2', '0,1']
+      const currentState = {
+        ...initialState,
+        currentPlayer: 1,
+        heroes: {
+          ...initialState.heroes,
+          '0,0': '0,1',
+          '0,1': '0,2'
         }
+      }
 
-        expect(() => santorini(action, options, currentState)).toThrow(notVacantPositionError)
-      })
+      expect(() => santorini(action, options, currentState)).toThrow(notVacantPositionError)
     })
   })
 })
