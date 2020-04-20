@@ -24,11 +24,16 @@ function validateBoardPosition (position, board) {
 }
 
 function validateVacantPosition (position, heroes) {
-  if (heroes[position]) throw notVacantPositionError
+  if (Object.values(heroes).includes(position)) throw notVacantPositionError
 }
 
 function validateMoveToLevel (currentPosition, destinationPosition, board) {
-  if (board[currentPosition] + 1 < board[destinationPosition]) throw invalidMoveToLevelError
+  if (
+    (board[currentPosition] + 1 < board[destinationPosition]) ||
+    (board[destinationPosition] === MAX_LEVEL)
+  ) {
+    throw invalidMoveToLevelError
+  }
 }
 
 function validateRange (origin, destination) {
