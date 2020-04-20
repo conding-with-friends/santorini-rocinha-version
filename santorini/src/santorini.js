@@ -79,7 +79,7 @@ function setup (action, options, state) {
   }
 }
 
-function moveAndBuild (action, option, state) {
+function moveAndBuild (action, options, state) {
   const { currentPlayer, playersCount, heroes, phase, board } = state
   const { moveTo, buildAt, hero } = options
 
