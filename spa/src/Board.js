@@ -1,36 +1,48 @@
-import React from 'react'
-import { createUseStyles } from 'react-jss'
+import React, { useState, useEffect, useContext } from 'react'
 
+import AppContext from './app-context'
 import Slot from './Slot'
 
-const useStyle = createUseStyles({
-  board: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(5, 1fr)',
-    gridTemplateRows: 'repeat(5, 1fr)',
-    columnGap: '1rem',
-    rowGap: '1rem',
-    margin: '0 auto',
-    width: '50vw',
-    height: '50vw'
-  }
-})
+const Board = () => {
+  const [{ phase }, isMyTurn] = useContext(AppContext)
 
-const Board = ({ slots, heroes }) => {
+  if (!isMyTurn) return <WatcherBoard />
+  if (phase === 'SETUP') return <Setup />
+
+  return <MoveAndBuild />
+
+  const [state, setState] = useState([])
   const classes = useStyle()
 
+  useEffect(() => {
+    if (state.length === 2) {
+      const confirm = window.confirm(`${JSON.stringify(state)}?`)
+
+      if (confirm) {
+        dispatch({ action: 'CHANGE_PLAYER' })
+      } else {
+        setState([])
+      }
+    }
+  }, [state.length, dispatch, setState])
+
   return (
-    <main className={classes.board}>
-      {Object.keys(slots).map(
-        position => (
-          <Slot
-            key={position}
-            level={slots[position]}
-            hasHero={Object.values(heroes).includes(position)}
-          />
-        )
-      )}
-    </main>
+    <>
+      <main className={classes.board}>
+        {Object.keys(board).map(
+          position => (
+            <Slot
+              key={position}
+              level={board[position]}
+              hasHero={[...Object.values(heroes), ...state].includes(position)}
+              onClick={() => isMyTurn && setState([...state, position])}
+            />
+          )
+        )}
+      </main>
+
+      {currentPlayer === localPlayerIndex && `Your turn: ${phase}`}
+    </>
   )
 }
 
