@@ -7,8 +7,12 @@ import {
   notOnPhaseError,
   invalidMoveToLevelError,
   invalidRangeError,
-  invalidBuildLevelError
+  invalidBuildLevelError,
+  invalidMoveError,
+  invalidBuildError
 } from './errors'
+
+import { getValidPositionsToMove, getValidPositionsToBuild } from './helpers'
 
 function validatePhase (expectedPhase, currentPhase) {
   if (expectedPhase !== currentPhase) throw notOnPhaseError
@@ -50,6 +54,18 @@ function validateBuild (position, board) {
   if (board[position] == MAX_LEVEL) throw invalidBuildLevelError
 }
 
+function validatePositionToMove (hero, moveTo, heroes, board) {
+  if (
+    !getValidPositionsToMove(hero, heroes, board).includes(moveTo)
+  ) throw invalidMoveError
+}
+
+function validatePositionToBuild (hero, buildAt, heroes, board) {
+  if (
+    !getValidPositionsToBuild(hero, heroes, board).includes(buildAt)
+  ) throw invalidBuildError
+}
+
 export {
   validatePhase,
   validateSetupPositions,
@@ -57,5 +73,7 @@ export {
   validateVacantPosition,
   validateMoveToLevel,
   validateRange,
-  validateBuild
+  validateBuild,
+  validatePositionToMove,
+  validatePositionToBuild
 }

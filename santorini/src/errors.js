@@ -7,6 +7,9 @@ const invalidRangeError = new Error('Invalid range for move or build')
 const invalidBuildLevelError = new Error('Invalid build level for position')
 const invalidActionError = new Error('Invalid action')
 
+const invalidMoveError = new Error('Invalid move')
+const invalidBuildError = new Error('Invalid build')
+
 export {
   invalidSetupPositionError,
   invalidPositionError,
@@ -15,5 +18,7 @@ export {
   invalidMoveToLevelError,
   invalidRangeError,
   invalidBuildLevelError,
-  invalidActionError
+  invalidActionError,
+  invalidMoveError,
+  invalidBuildError
 }

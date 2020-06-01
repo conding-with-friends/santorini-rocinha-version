@@ -3,9 +3,8 @@ import {
   validateSetupPositions,
   validateBoardPosition,
   validateVacantPosition,
-  validateMoveToLevel,
-  validateRange,
-  validateBuild
+  validatePositionToMove,
+  validatePositionToBuild
 } from './validations'
 
 import { MAX_PLAYERS } from './consts'
@@ -82,19 +81,14 @@ function setup (action, options, state) {
 function moveAndBuild (action, options, state) {
   const { currentPlayer, playersCount, heroes, phase, board } = state
   const { moveTo, buildAt, hero } = options
+  const hero = `${currentPlayer},${hero}`
 
   validatePhase(action, phase)
-  validateBoardPosition(moveTo, board)
-  validateBoardPosition(buildAt, board)
-  validateVacantPosition(moveTo, heroes)
-  validateVacantPosition(buildAt, heroes)
+  validatePositionToMove(hero, moveTo, heroes, board)
 
-  const heroPosition = heroes[`${currentPlayer},${hero}`]
+  const heroesAfterMove = { ...heroes, [hero]: moveTo }
 
-  validateRange(heroPosition, moveTo)
-  validateRange(moveTo, buildAt)
-  validateMoveToLevel(heroPosition, moveTo, board)
-  validateBuild(buildAt, board)
+  validatePositionToBuild(hero, buildAt, heroesAfterMove, board)
 
   return {
     ...state,
@@ -103,10 +97,7 @@ function moveAndBuild (action, options, state) {
       ...board,
       [buildAt]: board[buildAt] + 1
     },
-    heroes: {
-      ...heroes,
-      [`${currentPlayer},${hero}`]: moveTo
-    }
+    heroes: heroesAfterMove
   }
 }
 
