@@ -1,10 +1,8 @@
 import {
   validatePhase,
-  validateSetupPositions,
-  validateBoardPosition,
-  validateVacantPosition,
   validatePositionToMove,
-  validatePositionToBuild
+  validatePositionToBuild,
+  validatePositionToSetup
 } from './validations'
 
 import { MAX_PLAYERS } from './consts'
