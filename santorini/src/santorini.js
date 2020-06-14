@@ -56,15 +56,11 @@ function getNextPhase (currentPlayer, heroes) {
     : 'SETUP'
 }
 
-function setup (action, options, state) {
+function setup (action, positions, state) {
   const { currentPlayer, playersCount, heroes, phase, board } = state
 
   validatePhase(action, phase)
-  validateSetupPositions(...options, board)
-  validateBoardPosition(options[0], board)
-  validateBoardPosition(options[1], board)
-  validateVacantPosition(options[0], heroes)
-  validateVacantPosition(options[1], heroes)
+  validatePositionToSetup(positions, heroes, board)
 
   return {
     ...state,

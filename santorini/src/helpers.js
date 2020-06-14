@@ -37,4 +37,9 @@ function getValidPositionsToBuild (hero, heroes, board) {
     .filter(isWithoutHeroes(heroes))
 }
 
-export { getValidPositionsToMove, getValidPositionsToBuild }
+function getValidPositionsToSetup (heroes, board) {
+  return Object.keys(board)
+    .filter(isWithoutHeroes(heroes))
+}
+
+export { getValidPositionsToMove, getValidPositionsToBuild, getValidPositionsToSetup }

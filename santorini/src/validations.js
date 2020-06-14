@@ -9,7 +9,8 @@ import {
   invalidRangeError,
   invalidBuildLevelError,
   invalidMoveError,
-  invalidBuildError
+  invalidBuildError,
+  invalidSetupError
 } from './errors'
 
 import { getValidPositionsToMove, getValidPositionsToBuild } from './helpers'
@@ -64,6 +65,13 @@ function validatePositionToBuild (hero, buildAt, heroes, board) {
   if (
     !getValidPositionsToBuild(hero, heroes, board).includes(buildAt)
   ) throw invalidBuildError
+}
+
+function validatePositionToSetup (positions, heroes, board) {
+  if (
+    positions.some(position => getValidPositionsToSetup(heroes, board).includes(position)) ||
+    position[0] === position[1]
+  ) throw invalidSetupError
 }
 
 export {

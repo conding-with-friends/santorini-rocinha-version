@@ -10,6 +10,8 @@ const invalidActionError = new Error('Invalid action')
 const invalidMoveError = new Error('Invalid move')
 const invalidBuildError = new Error('Invalid build')
 
+const invalidSetupError = new Error('Invalid setup')
+
 export {
   invalidSetupPositionError,
   invalidPositionError,
@@ -20,5 +22,6 @@ export {
   invalidBuildLevelError,
   invalidActionError,
   invalidMoveError,
-  invalidBuildError
+  invalidBuildError,
+  invalidSetupError
 }
