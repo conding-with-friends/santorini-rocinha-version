@@ -13,4 +13,4 @@ const useBoardStyle = createUseStyles({
   }
 })
 
-export useBoardStyle
+export { useBoardStyle }

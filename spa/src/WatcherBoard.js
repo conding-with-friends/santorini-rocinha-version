@@ -2,9 +2,10 @@ import React, { useContext } from 'react'
 
 import { useBoardStyle } from './styles'
 import AppContext from './app-context'
+import Slot from './Slot'
 
 const WatcherBoard = ({}) => {
-  const [{ board,  }] = useContext(AppContext)
+  const [{ board, heroes }] = useContext(AppContext)
 
   const classes = useBoardStyle()
 
@@ -15,7 +16,7 @@ const WatcherBoard = ({}) => {
           <Slot
             key={position}
             level={board[position]}
-            hasHero={[...Object.values(heroes), ...state].includes(position)}
+            hasHero={Object.values(heroes).includes(position)}
           />
         )
       )}
