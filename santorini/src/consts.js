@@ -1,7 +1,7 @@
-const MAX_PLAYERS = 2
 const MAX_LEVEL = 4
+const WIN_LEVEL = 3
 
 export {
-  MAX_PLAYERS,
-  MAX_LEVEL
+  MAX_LEVEL,
+  WIN_LEVEL
 }

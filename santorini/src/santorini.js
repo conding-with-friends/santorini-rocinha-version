@@ -1,3 +1,5 @@
+import { invalidActionError } from './errors'
+
 import {
   validatePhase,
   validatePositionToMove,
@@ -5,11 +7,15 @@ import {
   validatePositionToSetup
 } from './validations'
 
-import { MAX_PLAYERS } from './consts'
-import { invalidActionError } from './errors'
+import {
+  getValidPositionsToMove,
+  getValidPositionsToBuild,
+  getValidPositionsToSetup,
+  checkWinner,
+  getOponent
+} from './helpers'
 
 const initialState = {
-  playersCount: MAX_PLAYERS,
   currentPlayer: 0,
   phase: 'SETUP',
   board: {
@@ -22,7 +28,8 @@ const initialState = {
   heroes: {
     '0,0': null, '0,1': null,
     '1,0': null, '1,1': null
-  }
+  },
+  winner: null
 }
 
 function santorini (action, options, state = initialState) {
@@ -36,24 +43,6 @@ function santorini (action, options, state = initialState) {
   }
 }
 
-function getNextPlayer (currentPlayer, playersCount) {
-  const nextPlayer = currentPlayer + 1
-
-  return nextPlayer === playersCount ? 0 : nextPlayer
-}
-
-function getNextPhase (currentPlayer, heroes) {
-  const {
-    [`${currentPlayer},0`]: _,
-    [`${currentPlayer},1`]: __,
-    ...otherHeroes
-  } = heroes
-
-  return Object.values(otherHeroes).every(position => !!position)
-    ? 'MOVE_AND_BUILD'
-    : 'SETUP'
-}
-
 function setup (action, positions, state) {
   const { currentPlayer, playersCount, heroes, phase, board } = state
 
@@ -62,7 +51,7 @@ function setup (action, positions, state) {
 
   return {
     ...state,
-    currentPlayer: getNextPlayer(currentPlayer, playersCount),
+    currentPlayer: getOponent(currentPlayer),
     phase: getNextPhase(currentPlayer, heroes),
     heroes: {
       ...heroes,
@@ -72,9 +61,8 @@ function setup (action, positions, state) {
   }
 }
 
-function moveAndBuild (action, options, state) {
+function moveAndBuild (action, { moveTo, buildAt, hero }, state) {
   const { currentPlayer, playersCount, heroes, phase, board } = state
-  const { moveTo, buildAt, hero } = options
   const hero = `${currentPlayer},${hero}`
 
   validatePhase(action, phase)
@@ -84,15 +72,37 @@ function moveAndBuild (action, options, state) {
 
   validatePositionToBuild(hero, buildAt, heroesAfterMove, board)
 
-  return {
+  const newState = {
     ...state,
-    currentPlayer: getNextPlayer(currentPlayer, playersCount),
+    currentPlayer: getOponent(currentPlayer),
     board: {
       ...board,
       [buildAt]: board[buildAt] + 1
     },
     heroes: heroesAfterMove
   }
+
+  const winner = checkWinner(newState)
+
+  return {
+    ...newState,
+    phase: getNextPhase(currentPlayer, heroes, winner)
+    winner: winner
+  }
+}
+
+function getNextPhase (currentPlayer, heroes, winner = null) {
+  const {
+    [`${currentPlayer},0`]: _,
+    [`${currentPlayer},1`]: __,
+    ...otherHeroes
+  } = heroes
+
+  if (winner) return 'END_GAME'
+
+  return Object.values(otherHeroes).every(position => !!position)
+    ? 'MOVE_AND_BUILD'
+    : 'SETUP'
 }
 
 export default santorini

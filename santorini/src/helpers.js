@@ -1,4 +1,4 @@
-import { MAX_LEVEL } from './consts'
+import { MAX_LEVEL, WIN_LEVEL } from './consts'
 
 const isValidRange = heroPosition => position => {
   const [x, y] = heroPosition.split(',')
@@ -42,4 +42,33 @@ function getValidPositionsToSetup (heroes, board) {
     .filter(isWithoutHeroes(heroes))
 }
 
-export { getValidPositionsToMove, getValidPositionsToBuild, getValidPositionsToSetup }
+function checkWinner ({ board, heroes, currentPlayer }) {
+  for (const [hero, position] of Object.entries(heroes)) {
+    if (board[position] === WIN_LEVEL) return getHeroPlayer(hero)
+  }
+
+  const currentHeroes = Object.entries(heroes).filter(
+    ([hero]) => getHeroPlayer(hero) === currentPlayer
+  )
+
+  for (const [hero, position] of currentHeroes) {
+    if (!getValidPositionsToMove(hero, heroes, board).lenght) return getOponent(currentPlayer)
+  }
+}
+
+function getHeroPlayer (hero) {
+  return parseInt(hero.split(',')[0])
+}
+
+function getOponent (currentPlayer) {
+  return currentPlayer === 0 ? 1 : 0
+}
+
+export {
+  getValidPositionsToMove,
+  getValidPositionsToBuild,
+  getValidPositionsToSetup,
+  checkWinner,
+  getHeroPlayer,
+  getOponent
+}
